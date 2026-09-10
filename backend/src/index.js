@@ -35,8 +35,8 @@ const FRONTEND_ORIGIN =
 
 const corsOptions = {
   origin: (origin, callback) => {
-    // Allow requests that don't have an Origin header
-    // Example: Postman, server-to-server requests, health checks
+    // Allow requests without Origin header
+    // Example: Postman, curl, server-to-server requests
     if (!origin) {
       return callback(null, true);
     }
@@ -79,7 +79,7 @@ app.use(cors(corsOptions));
 
 /*
 |--------------------------------------------------------------------------
-| Handle CORS preflight requests
+| CORS Preflight
 |--------------------------------------------------------------------------
 */
 
@@ -87,11 +87,7 @@ app.options(/.*/, cors(corsOptions));
 
 /*
 |--------------------------------------------------------------------------
-| JSON body parser
-|--------------------------------------------------------------------------
-| Patient records can contain files, history and intake information.
-| Cloudinary stores actual files, but old records may still contain
-| larger base64 data.
+| JSON Body Parser
 |--------------------------------------------------------------------------
 */
 
@@ -141,9 +137,37 @@ app.use("/api/uploads", uploadsRoute);
 
 /*
 |--------------------------------------------------------------------------
-| HTTP Server
+| Global Error Handler
 |--------------------------------------------------------------------------
-| Socket.io shares the same HTTP server and PORT.
+| This is important for debugging.
+| If Express/body-parser rejects a request, we will get the
+| real error instead of only "Bad Request".
+|--------------------------------------------------------------------------
+*/
+
+app.use((err, req, res, next) => {
+  console.error("========================================");
+  console.error("REQUEST ERROR");
+  console.error("========================================");
+
+  console.error("Method:", req.method);
+  console.error("URL:", req.originalUrl);
+  console.error("Message:", err.message);
+  console.error("Type:", err.type);
+  console.error("Status:", err.status);
+
+  console.error("========================================");
+
+  res.status(err.status || 500).json({
+    error: err.message || "Request failed",
+    type: err.type || "unknown",
+    status: err.status || 500,
+  });
+});
+
+/*
+|--------------------------------------------------------------------------
+| HTTP Server
 |--------------------------------------------------------------------------
 */
 
