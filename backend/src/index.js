@@ -16,7 +16,7 @@ const app = express();
 const PORT = process.env.PORT || 4000;
 const FRONTEND_ORIGIN = process.env.FRONTEND_ORIGIN || "http://localhost:5173";
 
-app.use(cors({ origin: FRONTEND_ORIGIN }));
+app.use(cors({ origin: FRONTEND_ORIGIN, credentials: true }));
 // Raised from the old 2mb default: a patient's full record (files +
 // history + intake transcript) is sent as ONE JSON PATCH body, and used to
 // silently blow past 2mb once a couple of documents were attached — Express
