@@ -1,0 +1,131 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  @apply bg-parchment text-ink font-sans;
+}
+
+::selection {
+  background: #e7a233;
+  color: #231a08;
+}
+
+.a-input {
+  @apply w-full bg-transparent border-0 border-b-[1.5px] border-line py-2.5 px-0.5 text-[15px] text-ink outline-none font-sans;
+}
+.a-input:focus {
+  @apply border-leaf;
+}
+
+.a-select {
+  @apply w-full bg-transparent border-0 border-b-[1.5px] border-line py-2.5 px-0.5 text-[15px] text-ink outline-none font-sans;
+}
+
+.a-label {
+  @apply text-[12.5px] text-muted mb-0.5 block;
+}
+
+.btn {
+  @apply inline-flex items-center justify-center gap-2 font-semibold text-[14.5px] py-3 px-[22px] rounded-sm cursor-pointer border-[1.5px] border-transparent transition-colors disabled:opacity-55 disabled:cursor-default;
+}
+.btn-primary {
+  @apply bg-leaf text-parchment hover:enabled:bg-leaf-dark;
+}
+.btn-outline {
+  @apply bg-transparent text-leaf border-leaf hover:enabled:bg-sage;
+}
+.btn-accent {
+  @apply bg-marigold text-[#231A08] hover:enabled:brightness-95;
+}
+
+.a-card {
+  @apply bg-paper border border-line;
+}
+
+.tile {
+  @apply border border-line bg-paper cursor-pointer transition-all hover:border-leaf hover:-translate-y-px;
+}
+
+.sidebar-link {
+  @apply flex items-center gap-2.5 py-[11px] px-4 text-[#CFE0D6] text-sm cursor-pointer border-l-[3px] border-transparent hover:text-white;
+}
+.sidebar-link.active {
+  @apply bg-white/10 text-white border-l-marigold;
+}
+
+.chip {
+  @apply inline-flex items-center gap-1.5 text-[12.5px] py-1 px-2.5 rounded-full bg-sage text-leaf-dark;
+}
+
+.scrollbar-thin::-webkit-scrollbar {
+  width: 6px;
+}
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  @apply bg-line rounded;
+}
+
+.a-card-soft {
+  @apply bg-paper border border-line rounded-lg shadow-[0_1px_2px_rgba(28,42,34,0.04)];
+}
+
+/* Used by the doctor's "Download as PDF" button (DoctorLookupPage): only
+   the case sheet card marked .printing-target is shown when the browser's
+   print/Save-as-PDF dialog opens, everything else on the page is hidden.
+   Zeroing out height/margin/padding/border (not just visibility) on every
+   other element stops the rest of the dashboard's layout — sidebar,
+   previous-cases list, etc. — from leaving behind blank space that would
+   otherwise spill the report across extra pages. */
+@page {
+  size: A4;
+  margin: 8mm;
+}
+@media print {
+  body * {
+    visibility: hidden;
+    height: 0 !important;
+    max-height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+    overflow: hidden !important;
+  }
+  .printing-target,
+  .printing-target * {
+    visibility: visible;
+    height: auto !important;
+    max-height: none !important;
+    margin: revert !important;
+    padding: revert !important;
+    border: revert !important;
+    overflow: visible !important;
+  }
+  .printing-target {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+  }
+}
+
+.empty-state {
+  @apply border-2 border-dashed border-line rounded-lg text-center bg-[#FBF8F1];
+}
+
+.icon-btn-danger {
+  @apply bg-none border-none cursor-pointer text-[#C7CDC2] hover:text-coral transition-colors p-1.5 rounded hover:bg-coral/10;
+}
+
+.step-badge {
+  @apply w-6 h-6 rounded-full bg-leaf text-parchment text-[12px] font-bold flex items-center justify-center shrink-0;
+}
+
+.tile-drop-active {
+  @apply border-leaf bg-sage/60;
+}
